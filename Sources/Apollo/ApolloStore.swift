@@ -244,8 +244,7 @@ public final class ApolloStore {
       defer { loader.dispatch() }
 
       return loader[key].map { record in
-        guard let object = record?.fields else { throw JSONDecodingError.missingValue }
-        return object
+        return record?.fields ?? [:]
       }
     }
   }

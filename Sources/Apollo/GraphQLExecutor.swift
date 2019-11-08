@@ -210,11 +210,8 @@ final class GraphQLExecutor {
     let resultOrPromise = resolver(object, info)
     
     return resultOrPromise.on(queue: queue).flatMap { value in
-      guard let value = value else {
-        throw JSONDecodingError.missingValue
-      }
       
-      return try self.complete(value: value, ofType: firstField.type, info: info, accumulator: accumulator)
+      return try self.complete(value: value ?? NSNull(), ofType: firstField.type, info: info, accumulator: accumulator)
     }.map {
       try accumulator.accept(fieldEntry: $0, info: info)
     }.catch { error in
